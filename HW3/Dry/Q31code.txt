@@ -1,0 +1,28 @@
+Producer:
+
+Init int count
+Init cond_t cond_count
+Init mutex_t m_lock
+Init PCQueue p, c
+Init fields curr, next
+for t=0:n_generations
+	count = N
+	for i=0:N
+		p.push(job)
+	lock(m_lock);
+	while(count > 0)
+		cond_wait(cond_count,lock)
+	unlock(m_lock);
+	swap(curr, next)
+
+Consumer:
+
+while(1)
+	job j = p.pop()
+	execute j
+	lock(m_lock);
+	count--;
+	cond_signal(cond_count)
+	unlock(m_lock);
+	
+	
